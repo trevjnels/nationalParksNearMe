@@ -1,6 +1,22 @@
 /* element based cs */
 body {
   margin: 0;
+  text-align: center;
+}
+
+.parkOutput {
+  overflow-y: scroll;
+  object-position: top;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 99%;
 }
 
 button {
@@ -40,13 +56,13 @@ button:active {
 }
 
 .top {
-  height: 49.5%;
+  height: 24.5%;
   width: 100%;
   border: 3px solid red;
 }
 
 .bottom {
-  height: 49.5%;
+  height: 75.5%;
   width: 100%;
   border: 2px solid blue;
 }
@@ -72,18 +88,17 @@ button:active {
 /*  dimensions end */
 .one {
   border-color: pink;
+  height: 60%;
 }
 
 .two {
   border-color: orange;
+  height: 30%;
 }
 
 .three {
   border-color: brown;
-}
-
-.four {
-  border-color: purple;
+  height: 90%;
 }
 
 .footer {
