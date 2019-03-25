@@ -4,11 +4,31 @@ body {
   text-align: center;
 }
 
-.parkOutput {
+.parkname {
+  font-weight: bold;
+  text-shadow: 2px 2px 2px lightgray;
+  font-size: 1.3em;
+}
+
+.resultschooser {
+  justify-content: space-between;
+  height: 6vh;
+}
+
+.parkOutputSolo {
   overflow-y: scroll;
   object-position: top;
   max-height: 100%;
   object-fit: contain;
+  width: 97%;
+}
+
+.parkOutputDuo {
+  overflow-y: scroll;
+  object-position: top;
+  max-height: 100%;
+  object-fit: contain;
+  width: 45%;
 }
 
 form {

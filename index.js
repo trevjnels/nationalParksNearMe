@@ -84,9 +84,11 @@ const renderPage = function() {
     `<h1 class="title">Search for national parks in (near) your state!</h1> `
   );
   $(".two").html(
-    `<form class="parkSearchForm"><select class="stateSelector"></select><span class="flex flex-col">Select Number of Results (between 1-10)<input class="resultsMax" type="number"></input></span><button value="10" required class="submit">Search</button></form>`
+    `<form class="parkSearchForm"><select class="stateSelector selector1"></select><select class="stateSelector selector2"> <option class="stateoption optional">Optional</option></select><span class=" resultschooser flex flex-col">Select Number of Results (between 1-10)<input class="resultsMax" type="number" value="10"></input></span><button value="10" required class="submit">Search</button></form>`
   );
-  $(".three").html(`<div class="parkOutput">`);
+  $(".three").html(
+    `<div class="parkOutput1"></div><div class="parkOutput2"></div>`
+  );
   stateArray.forEach(function(state) {
     $(".stateSelector").append(
       `<option class="stateoption ${state}
@@ -96,7 +98,7 @@ const renderPage = function() {
   //
 };
 
-const renderOutput = function(resp, max) {
+const renderOutput = function(resp, max, div) {
   console.log(resp.data);
   // resp.data.forEach(function(entry)
 
@@ -106,7 +108,8 @@ const renderOutput = function(resp, max) {
 
   for (let i = 0; i < max; i++) {
     var entry = resp.data[i];
-    $(".parkOutput").append(`
+    console.log("div is ", div);
+    $(`.parkOutput${div}`).append(`
 
       <div class="flex flex-row">
         <h4 class="parkname">${entry.fullName}</h4>
@@ -117,11 +120,11 @@ const renderOutput = function(resp, max) {
   }
 };
 
-const getData = function(url, max) {
+const getData = function(url, max, div) {
   // Default options are marked with *
-  return fetch(url)
+  fetch(url)
     .then(response => response.json())
-    .then(response => renderOutput(response, max)) // JSON-string from `response.json()` call
+    .then(response => renderOutput(response, max, div)) // JSON-string from `response.json()` call
     .catch(error => console.error(error)); // parses JSON response into native Javascript objects
 };
 
@@ -134,15 +137,32 @@ const urlBuilder = function(state, api_key) {
 const formListner = function() {
   $(".submit").click(function(e) {
     e.preventDefault();
-    $(".parkOutput").html("");
-    var currentState = $(".stateSelector").val();
+    $(".parkOutput2").show();
+    $(".parkOutput1").html("");
+    $(".parkOutput2").html("");
+    $(".parkOutput1").toggleClass("parkOutputSolo", false);
+
+    var currentState1 = $(`.selector1`).val();
+    var currentState2 = $(`.selector2`).val();
+
     var resultsMax = $(".resultsMax").val();
     if (resultsMax < 1 || resultsMax > 10) {
       alert("input a number between 1&10");
-      $(".parkOutput").html(`<h1>Input a number between 1-10!</h1>`);
+      $(".three").html(`<h1>Input a number between 1-10!</h1>`);
     }
-    var url = urlBuilder(stateObj[currentState].abbv, parkAPIKey);
-    getData(url, resultsMax);
+    var url1 = urlBuilder(stateObj[currentState1].abbv, parkAPIKey);
+
+    getData(url1, resultsMax, 1);
+
+    if (currentState2 !== "Optional") {
+      var url2 = urlBuilder(stateObj[currentState2].abbv, parkAPIKey);
+      getData(url2, resultsMax, 2);
+      $(".parkOutput2").toggleClass("parkOutputDuo", true);
+      $(".parkOutput1").toggleClass("parkOutputDuo", true);
+    } else {
+      $(".parkOutput1").toggleClass("parkOutputSolo", true);
+      $(".parkOutput2").hide();
+    }
   });
 };
 
